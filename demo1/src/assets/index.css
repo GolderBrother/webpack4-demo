@@ -1,0 +1,14 @@
+@import './index.less';
+*{
+    margin: 0;
+    padding: 0;
+}
+#app {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background-color: #F60;
+    text-align: center;
+    color: #fff;
+    transform: rotate(45deg) scale(.6);
+}
