@@ -806,7 +806,7 @@ npm run dll
 复制代码会发现生成了我们需要的集合第三地方
 代码的 vendor.dll.js
 我们需要在 html 文件中手动引入这个 js 文件
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -820,13 +820,19 @@ npm run dll
   <div id="app"></div>
 </body>
 </html>
-复制代码这样如果我们没有更新第三方依赖包，就不必npm run dll。直接执行npm run dev npm run build的时候会发现我们的打包速度明显有所提升。因为我们已经通过dllPlugin将第三方依赖包抽离出来了。
-2.5.1.6 配置缓存
+```
+
+这样如果我们没有更新第三方依赖包，就不必npm run dll。直接执行npm run dev npm run build的时候会发现我们的打包速度明显有所提升。因为我们已经通过dllPlugin将第三方依赖包抽离出来了。
+
+### 2.5.1.6 配置缓存
 
 我们每次执行构建都会把所有的文件都重复编译一遍，这样的重复工作是否可以被缓存下来呢，答案是可以的，目前大部分 loader 都提供了 cache 配置项。比如在 babel-loader 中，可以通过设置 cacheDirectory 来开启缓存，babel-loader?cacheDirectory=true 就会将每次的编译结果写进硬盘文件（默认是在项目根目录下的 node_modules/.cache/babel-loader 目录内，当然你也可以自定义）
 
 但如果 loader 不支持缓存呢？我们也有方法,我们可以通过 cache-loader ，它所做的事情很简单，就是 babel-loader 开启 cache 后做的事情，将 loader 的编译结果写入硬盘缓存。再次构建会先比较一下，如果文件较之前的没有发生变化则会直接使用缓存。使用方法如官方 demo 所示，在一些性能开销较大的 loader 之前添加此 loader 即可
+
+```js
 npm i -D cache-loader
+```
 
 ![img](https://user-gold-cdn.xitu.io/2019/12/16/16f0d1f7f1df86cb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
@@ -871,7 +877,7 @@ jquery: 'jQuery'
 $('.my-element').animate(/_ ... _/);
 复制代码 2.5.2.3 Tree-shaking
 
-这里单独提一下 tree-shaking,是因为这里有个坑。tree-shaking 的主要作用是用来清除代码中无用的部分。目前在 webpack4 我们设置 mode 为 production 的时候已经自动开启了 tree-shaking。但是要想使其生效，生成的代码必须是 ES6 模块。不能使用其它类型的模块如 CommonJS 之流。如果使用 Babel 的话，这里有一个小问题，因为 Babel 的预案（preset）默认会将任何模块类型都转译成 CommonJS 类型，这样会导致 tree-shaking 失效。修正这个问题也很简单，在.babelrc 文件或在 webpack.config.js 文件中设置 modules： false 就好了
+> 这里单独提一下 tree-shaking,是因为这里有个坑。tree-shaking 的主要作用是用来清除代码中无用的部分。目前在 webpack4 我们设置 mode 为 production 的时候已经自动开启了 tree-shaking。但是要想使其生效，生成的代码必须是 ES6 模块。不能使用其它类型的模块如 CommonJS 之流。如果使用 Babel 的话，这里有一个小问题，因为 Babel 的预案（preset）默认会将任何模块类型都转译成 CommonJS 类型，这样会导致 tree-shaking 失效。修正这个问题也很简单，在.babelrc 文件或在 webpack.config.js 文件中设置 modules： false 就好了
 
 // .babelrc
 {
@@ -1087,11 +1093,11 @@ module.exports = {
 4 webpack5.0 的时代
 无论是前端框架还是构建工具的更新速度远远超乎了我们的想象,前几年的 jquery 一把梭的时代一去不复返。我们要拥抱的是不断更新迭代的 vue、react、node、serverless、docker、k8s....
 
-不甘落后的 webpack 也已经在近日发布了 webpack 5.0.0 beta 10 版本。在之前作者也曾提过 webpack5.0 旨在减少配置的复杂度，使其更容易上手(webpack4 的时候也说了这句话)，以及一些性能上的提升
+不甘落后的 webpack 也已经在近日发布了 [webpack 5.0.0 beta 10](https://github.com/webpack/webpack/releases/tag/v5.0.0-beta.10) 版本。在之前作者也曾提过 webpack5.0 旨在减少配置的复杂度，使其更容易上手(webpack4 的时候也说了这句话)，以及一些性能上的提升
 
-使用持久化缓存提高构建性能；
-使用更好的算法和默认值改进长期缓存（long-term caching）；
-清理内部结构而不引入任何破坏性的变化；
-引入一些 breaking changes，以便尽可能长的使用 v5 版本。
+- 使用持久化缓存提高构建性能；
+- 使用更好的算法和默认值改进长期缓存（long-term caching）；
+- 清理内部结构而不引入任何破坏性的变化；
+- 引入一些 breaking changes，以便尽可能长的使用 v5 版本。
 
 目前来看，维护者的更新很频繁，相信用不了多久 webpack5.0 将会拥抱大众。感兴趣的同学可以先安装 beta 版本尝尝鲜。不过在此之前建议大家先对 webpack4 进行一番掌握,这样后面的路才会越来越好走。

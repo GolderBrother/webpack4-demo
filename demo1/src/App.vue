@@ -4,6 +4,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery';
 export default {
   data() {
     return {
@@ -12,6 +13,7 @@ export default {
   },
   created() {
     console.log("初始化成功");
+    console.log('$', $('#container'));
   }
 };
 </script>
